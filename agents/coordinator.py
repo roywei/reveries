@@ -1,15 +1,30 @@
-from .prompts.system_prompts import COORDINATOR_INSTRUCTIONS
-
-
+from .prompts.system_prompts import COORDINATOR_INSTRUCTIONS, EXECUTROR_INSTRUCTIONS, PLANNER_INSTRUCTIONS, INTROSPECTOR_INSTRUCTIONS, MEMORIZER_INSTRUCTIONS
 class CoordinatorAgent:
     def __init__(self, client, model="gpt-4-1106-preview"):
         self.client = client
         self.model = model
-        self.assistant = self.create_assistant()
+        self.coordinator = self.create_assistant()
+        self.executor = self.client.beta.assistants.create(
+            name = "executor",
+            instructions=EXECUTROR_INSTRUCTIONS,
+            model=self.model,
+            tools=[{"type": "code_interpreter"}]
+        )
+        self.planner = self.client.beta.assistants.create(
+            name = "planner",
+            instructions=PLANNER_INSTRUCTIONS,
+            model=self.model
+        )
+        self.executor = self.client.beta.assistants.create(
+            name = "introspector",
+            instructions=INTROSPECTOR_INSTRUCTIONS,
+            model=self.model,
+            tools=[{"type": "code_interpreter"}]
+        )
 
     def create_assistant(self):
         return self.client.beta.assistants.create(
-            name="CoordinatorAgent",
+            name="coordinator",
             instructions=COORDINATOR_INSTRUCTIONS,
             model=self.model,
             tools=[
@@ -77,11 +92,6 @@ class CoordinatorAgent:
     def retrieve_run(self, thread_id, run_id):
         return self.client.beta.threads.runs.retrieve(
             thread_id=thread_id, run_id=run_id
-        )
-
-    def post_message(self, thread_id, content, role="user"):
-        return self.client.beta.threads.messages.create(
-            thread_id=thread_id, role=role, content=content
         )
 
     def list_messages(self, thread_id):
