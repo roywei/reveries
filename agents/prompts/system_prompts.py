@@ -35,9 +35,7 @@ Your action space includes calling different agents for specific functions:
 As the coordinator, you will output actions in JSON format, which should include the 'action' to be taken and any 'details' relevant to the task. For example:
 {
   "action": "callPlanner",
-  "details": {
-    "task": "Forecast sales based on historical data."
-  }
+  "instructions": "Forecast sales based on historical data."
 }
 The general workflow is as follows, and you are fully autonomous in deciding which action to take next:
 1. Think step by step before taking action, ask clarifying questions, make assumptions, and call the planner to devise a plan.
