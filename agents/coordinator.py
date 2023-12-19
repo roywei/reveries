@@ -46,55 +46,41 @@ class CoordinatorAgent:
             instructions=COORDINATOR_INSTRUCTIONS,
             model=self.model,
             tools=[
-                {
+                 {
                     "type": "function",
                     "function": {
-                        "name": "callPlanner",
-                        "description": "call Planner to breakdown task into step by step plan, recap the plan or update the plan",
-                        "parameters": {
-                            "type": "object",
-                            "properties": {},
-                            "required": [],
-                        },
-                    },
-                },
-                {
-                    "type": "function",
-                    "function": {
-                        "name": "callExecutor",
-                        "description": "call exectuor to write code or call external APIs to complete a single step/task",
-                        "parameters": {
-                            "type": "object",
-                            "properties": {},
-                            "required": [],
-                        },
-                    },
-                },
-                {
-                    "type": "function",
-                    "function": {
-                        "name": "callIntrospector",
-                        "description": "call Introspector to review, reflect, and analyze the currenct sitation, provide feedback and help with next action",
-                        "parameters": {
-                            "type": "object",
-                            "properties": {},
-                            "required": [],
-                        },
-                    },
-                },
-                {
-                    "type": "function",
-                    "function": {
-                        "name": "callMemorizer",
-                        "description": "call Memorizer to retrieve and provide context for current problem or update the knowledge base for future use",
-                        "parameters": {
-                            "type": "object",
-                            "properties": {},
-                            "required": [],
-                        },
-                    },
-                },
-            ],
+  "name": "call_next_agent",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "explaination": {
+        "type": "string",
+        "description": "Explain the reason to choose this agent to take the next action"
+      },
+      "agent": {
+        "type": "string",
+        "enum": [
+          "Planner",
+          "Executor",
+          "Memorizer",
+          "Introspector"
+        ],
+        "description": "The name of the agent to call, must be one of Planner, Executor, Memorizer, and Introspector."
+      },
+      "instructions": {
+        "type": "string",
+        "description": "Instructions for the agent been called"
+      }
+    },
+    "required": [
+      "explaination",
+      "agent",
+      "instructions"
+    ]
+  },
+  "description": "Call the next agent, give instructions to that agent and explainations why choose this agent"
+}
+}],
         )
 
     def create_thread(self):
