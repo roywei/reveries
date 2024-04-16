@@ -1,7 +1,8 @@
 """
 Meta prompt from https://docs.anthropic.com/claude/docs/helper-metaprompt-experimental
 """
-META_PROMPT="""
+
+META_PROMPT = """
 Today you will be writing instructions to an eager, helpful, but inexperienced and unworldly AI assistant who needs careful instruction and examples to understand how best to behave. I will explain a task to you. You will write instructions that will direct the assistant on how best to accomplish the task consistently, accurately, and correctly. Here are some examples of tasks and instructions.
 
 <Task Instruction Example>
