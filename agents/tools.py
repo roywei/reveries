@@ -5,7 +5,6 @@ list of tool functions
 import re
 
 TOOL_EXPLAINATION = """
-- commander: seek for Commander's help to generate a long term plan or update the current plan.
 - calculator: A simple calculator that performs basic arithmetic operations.
 """
 
@@ -23,12 +22,7 @@ TOOLS = [
             },
             "required": ["expression"],
         },
-    },
-    {
-        "name": "commander",
-        "description": "Seek for Commander's help to generate a long term plan or update the current plan.",
-        "input_schema": {"type": "object", "properties": {}},
-    },
+    }
 ]
 
 
