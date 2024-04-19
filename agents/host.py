@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 
 from tools import TOOLS, TOOL_EXPLAINATION, calculate
 from prompts.system_prompts import COMMANDER_NARRATIVE, EXECUTOR_NARRATIVE
+from python_interpreter import PythonInterpreter
 
 load_dotenv()
 
@@ -36,6 +37,7 @@ class Host:
         self.max_retry = max_retry
         self.failed_commander_call = 0
         self.failed_executor_call = 0
+        self.python_interpreter = PythonInterpreter()
 
     def convert_hisotry_to_messages(self):
         """
@@ -48,8 +50,10 @@ class Host:
         """
         Process the tool call based on the tool name
         """
-        if tool_name == "code executor":
-            raise NotImplementedError("Code executor tool is not implemented yet")
+        if tool_name == "run_python":
+            if self.python_interpreter.run(tool_input["code"]):
+                return self.python_interpreter.run(tool_input["code"])
+            return "Your code did not return any output."
         if tool_name == "calculator":
             return calculate(tool_input["expression"])
         raise ValueError(f"Unknown tool name: {tool_name}")
